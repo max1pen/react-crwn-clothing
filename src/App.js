@@ -5,7 +5,7 @@ import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './components/shop/shop.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import Header from './components/header/header.component';
-import { auth } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 import React from 'react';
 
 const HatsPage = props => {
@@ -30,9 +30,20 @@ class App extends React.Component {
   unSubscribeFromAuth = null;
 
   componentDidMount() {
-    this.unSubscribeFromAuth = auth.onAuthStateChanged(user => {
-      this.setState({currentUser: user});
-      console.log(user);
+    this.unSubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      if(userAuth) { 
+        const userRef = createUserProfileDocument(userAuth);
+        
+        (await userRef).onSnapshot(snapShot => {
+          this.setState({
+            id: snapShot.id,
+            ...snapShot.data()
+          });
+        })
+      }
+
+      this.setState({currentUser: userAuth});
+      
     })
   }
 
