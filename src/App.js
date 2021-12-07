@@ -2,6 +2,7 @@ import './App.css';
 import { Route, Link } from 'react-router-dom';
 
 import HomePage from './pages/homepage/homepage.component';
+import ShopPage from './components/shop/shop.component';
 
 const HatsPage = props => {
   console.log(props);
@@ -18,6 +19,7 @@ function App() {
     <div>
         <Route exact path="/" component={HomePage} />
         <Route path="/hats" component={HatsPage} />
+        <Route path="/shop" component={ShopPage} />
     </div>
   );
 }
