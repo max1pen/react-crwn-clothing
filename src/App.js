@@ -1,8 +1,9 @@
 import './App.css';
-import { Route, Link } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
 
 import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './components/shop/shop.component';
+import Header from './components/header/header.component';
 
 const HatsPage = props => {
   console.log(props);
@@ -17,10 +18,13 @@ const HatsPage = props => {
 function App() {
   return (
     <div>
-        <Route exact path="/" component={HomePage} />
-        <Route path="/hats" component={HatsPage} />
-        <Route path="/shop" component={ShopPage} />
-    </div>
+        <Header/>
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route path="/hats" component={HatsPage} />
+          <Route path="/shop" component={ShopPage} />  
+        </Switch>
+        </div>
   );
 }
 
