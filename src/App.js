@@ -1,12 +1,16 @@
+import React from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
 
 import './App.css';
+
+import { connect } from 'react-redux';
+
 import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './components/shop/shop.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import Header from './components/header/header.component';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
-import React from 'react';
+import { setCurrentUser } from './redux/user/user.actions';
 
 const HatsPage = props => {
   console.log(props);
@@ -35,7 +39,7 @@ class App extends React.Component {
         const userRef = createUserProfileDocument(userAuth);
         
         (await userRef).onSnapshot(snapShot => {
-          this.setState({
+          this.props.setCurrentUser({
             id: snapShot.id,
             ...snapShot.data()
           });
@@ -54,7 +58,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-          <Header currentUser={this.state.currentUser} />
+          <Header />
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route path="/hats" component={HatsPage} />
@@ -66,4 +70,8 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapDispathToProps = dispatch => ({
+  setCurrentUser: user => dispatch(setCurrentUser(user))
+})
+
+export default connect(null, mapDispathToProps)(App);
